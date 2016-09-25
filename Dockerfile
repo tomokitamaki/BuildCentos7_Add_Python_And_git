@@ -1,6 +1,6 @@
 FROM docker.io/centos:latest
 MAINTAINER    tomokitamaki
-WORKDIR ~/&&pwd
+WORKDIR ~/
 RUN yum install -y git gcc make bzip2-libs.x86_64 bzip2 bzip2-devel.x86_64 readline readline-devel.x86_64 openssl openssl-devel.x86_64 sqlite-devel.x86_64
 RUN git clone https://github.com/yyuu/pyenv.git ~/.pyenv
 RUN echo "export PYENV_ROOT=\$HOME/.pyenv" >> ~/.bash_profile
