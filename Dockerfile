@@ -5,7 +5,7 @@ MAINTAINER    tomokitamaki
 WORKDIR ~/
 
 # pyenvとpythonのインストールに必要なものをインストール
-RUN yum install -y git gcc make bzip2-libs.x86_64 bzip2 bzip2-devel.x86_64 readline readline-devel.x86_64 openssl openssl-devel.x86_64 sqlite-devel.x86_64
+RUN yum install -y git gcc make bzip2-libs.x86_64 bzip2 bzip2-devel.x86_64 readline readline-devel.x86_64 openssl openssl-devel.x86_64 sqlite-devel.x86_64 patch
 
 # pyenvをcloneしてくる
 RUN git clone https://github.com/yyuu/pyenv.git ~/.pyenv
@@ -21,7 +21,12 @@ RUN echo "export LANG" >> ~/.bash_profile
 # &&でsourceに続けて実行しないとpyenvというコマンドがないというエラーになるので&&で繋げています。
 RUN source ~/.bash_profile && \
 pyenv install 3.5.2 && \
-pyenv local 3.5.2 && \
+pyenv global 3.5.2 && \
 pip install --upgrade pip
 
-ENTRYPOINT ["source","~/.bash_profile"]
+# 日本語が文字化けしないようにする
+RUN echo "LANG=ja_JP.UTF-8" >> ~/.bash_profile
+RUN echo "export LANG" >> ~/.bash_profile
+
+# run時にbash_profileが読み込まれるようにする。
+CMD ["/bin/bash --login"]
