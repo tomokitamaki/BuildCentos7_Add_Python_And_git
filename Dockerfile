@@ -29,4 +29,4 @@ RUN echo "LANG=ja_JP.UTF-8" >> ~/.bash_profile
 RUN echo "export LANG" >> ~/.bash_profile
 
 # run時にbash_profileが読み込まれるようにする。
-CMD ["/bin/bash --login"]
+CMD ["/bin/bash", "--login"]
