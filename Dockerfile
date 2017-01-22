@@ -1,4 +1,4 @@
-FROM docker.io/centos:latest
+FROM centos:7.3.1611
 MAINTAINER    tomokitamaki
 
 # ワーキングディレクトリを指定すべて/root/で実行されるようにする。
@@ -16,8 +16,8 @@ ADD .bash_profile /root/
 # pythonのインストールと使用するバージョンの指定し最後にpipをupdate
 # &&でsourceに続けて実行しないとpyenvというコマンドがないというエラーになるので&&で繋げています。
 RUN source /root/.bash_profile && \
-pyenv install 3.5.2 && \
-pyenv global 3.5.2 && \
+pyenv install 3.5.3 && \
+pyenv global 3.5.3 && \
 pip install --upgrade pip
 
 
