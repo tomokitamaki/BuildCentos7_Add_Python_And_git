@@ -1,25 +1,16 @@
 FROM centos:7.3.1611
-MAINTAINER    tomokitamaki
 
 # ワーキングディレクトリを指定すべて/root/で実行されるようにする。
 WORKDIR /root
 
-# pyenvとpythonのインストールに必要なものをインストール
-RUN yum install -y git gcc make bzip2-libs.x86_64 bzip2 bzip2-devel.x86_64 readline readline-devel.x86_64 openssl openssl-devel.x86_64 sqlite-devel.x86_64 patch
+# gitとiusリポジトリのインストール
+RUN yum update -y && yum upgrade && \
+yum install -y git https://centos7.iuscommunity.org/ius-release.rpm
 
-# pyenvをcloneしてくる
-RUN git clone https://github.com/yyuu/pyenv.git /root/.pyenv
+# python3.5のインストール
+RUN yum install -y python35u python35u-libs python35u-devel python35u-pip
 
-# pyenvの使用のための.bash_profileをコピー
-ADD .bash_profile /root/
-
-# pythonのインストールと使用するバージョンの指定し最後にpipをupdate
-# &&でsourceに続けて実行しないとpyenvというコマンドがないというエラーになるので&&で繋げています。
-RUN source /root/.bash_profile && \
-pyenv install 3.5.3 && \
-pyenv global 3.5.3 && \
-pip install --upgrade pip
-
-
-# run時にbash_profileが読み込まれるようにする。
-CMD ["/bin/bash", "--login"]
+# pythonのコマンドでpythonの3.5を使えるように修正。あとpipも。
+RUN unlink /bin/python && \
+    ln -s /bin/python3.5 /bin/python && \
+    ln -s /bin/pip3.5 /bin/pip
